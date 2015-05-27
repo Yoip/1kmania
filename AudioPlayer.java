@@ -31,8 +31,6 @@ public class AudioPlayer implements Runnable
             ais = AudioSystem.getAudioInputStream(new File(file));
         }
         catch(Exception e){}
-        while(!stopped){
-        }
     }
 
     public void start() throws Exception
