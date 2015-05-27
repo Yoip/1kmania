@@ -15,35 +15,36 @@ public class Parser
     {
         song = name;
     }
+
     public ArrayList<Integer> times()
     {
-        
+
         try {
-        BufferedReader br = new BufferedReader(new FileReader("songs/"+song+".osu"));
-        String line = br.readLine();
-        boolean asdf = false;
-        times = new ArrayList<Integer>();
-        while (line != null) {
-            
-            if(line.equals("[HitObjects]"))
-            {
-                asdf = true;
+            BufferedReader br = new BufferedReader(new FileReader("songs/"+song+".osu"));
+            String line = br.readLine();
+            boolean asdf = false;
+            times = new ArrayList<Integer>();
+            while (line != null) {
+
+                if(line.equals("[HitObjects]"))
+                {
+                    asdf = true;
+                }
+                else if(asdf)
+                {
+                    times.add(Integer.valueOf(line.split(",")[2]));
+                }
+                line = br.readLine();
             }
-            else if(asdf)
+            for(Integer s:times)
             {
-            times.add(Integer.valueOf(line.split(",")[2]));
+                System.out.println(s);
             }
-            line = br.readLine();
-        }
-        for(Integer s:times)
+        } 
+        catch(Exception e)
         {
-            System.out.println(s);
+
         }
-    } 
-    catch(Exception e)
-    {
-        
-    }
-    return times;
+        return times;
     }
 }
