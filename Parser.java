@@ -9,23 +9,39 @@ import java.util.ArrayList;
  */
 public class Parser
 {
-    private ArrayList<Integer> times;
-    private String song;
-    public Parser(String name)
+    private String file;
+
+    public Parser(String f)
     {
-        song = name;
+        file = f;
+    }
+
+    public long delay()
+    {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line = br.readLine();
+            while (line != null) {
+                if(line.length()>12){
+                    if(line.substring(0,12).equals("AudioLeadIn:"))
+                    {
+                        return Long.parseLong(line.substring(13,line.length()));
+                    }
+                }
+                line=br.readLine();
+            }
+        }catch(Exception e){e.printStackTrace();}
+        return 0;
     }
 
     public ArrayList<Integer> times()
     {
-
+        ArrayList<Integer> times = new ArrayList<Integer>();
         try {
-            BufferedReader br = new BufferedReader(new FileReader("songs/"+song+".osu"));
+            BufferedReader br = new BufferedReader(new FileReader(file));
             String line = br.readLine();
             boolean asdf = false;
-            times = new ArrayList<Integer>();
             while (line != null) {
-
                 if(line.equals("[HitObjects]"))
                 {
                     asdf = true;
@@ -36,15 +52,7 @@ public class Parser
                 }
                 line = br.readLine();
             }
-            for(Integer s:times)
-            {
-                System.out.println(s);
-            }
-        } 
-        catch(Exception e)
-        {
-
-        }
+        } catch(Exception e){}
         return times;
     }
 }
