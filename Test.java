@@ -16,6 +16,7 @@ public class Test extends JPanel implements Runnable,ActionListener
     private Timer timer;
     private int v;
     private Thread thread;
+    private Song song;
     private JFrame f;
 
     public static void main(String[] args) throws Exception
@@ -29,6 +30,7 @@ public class Test extends JPanel implements Runnable,ActionListener
     public Test(String file)
     {
         p = new Parser(file);
+        song = Song.makeNew("f.wav", p.delay());
         n=1;
         v = 0;
         f=new JFrame("1kmania");
@@ -42,10 +44,13 @@ public class Test extends JPanel implements Runnable,ActionListener
 
     public void run()
     {
-        Thread t = Song.makeNew("f.wav", p.delay());
-        t.start();
         ArrayList<Integer> ts = p.times();
-        //t.notify();
+        song.start();
+        try{
+            song.notify();
+            thread.sleep(ts.get(0));
+            v=255;
+        }catch(Exception e){}
         while(n<ts.size()){
             try{
                 thread.sleep(ts.get(n)-ts.get(n-1));
@@ -55,14 +60,15 @@ public class Test extends JPanel implements Runnable,ActionListener
             n++;
         }
     }
-    
+
     public void paint(Graphics g)
     {
         super.paint(g);
         setBackground(new Color(v,v,v));
+        g.drawString(Long.toString(song.getms()), 400, 300);
         v=v<3?0:v-2;
     }
-    
+
     public void actionPerformed(ActionEvent e)
     {
         repaint();
