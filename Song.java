@@ -22,7 +22,7 @@ public class Song extends Thread
     public void run()
     {
         try{
-            wait();
+            //wait();
             sleep(delay);
         }catch(Exception e){}
         clip.start();
@@ -31,5 +31,10 @@ public class Song extends Thread
     public long getms()
     {
         return clip.getMicrosecondPosition()/1000;
+    }
+    
+    public long getDelay()
+    {
+        return delay;
     }
 }

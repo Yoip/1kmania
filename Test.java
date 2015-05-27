@@ -9,7 +9,7 @@ import javax.swing.*;
  * @author Alex
  * @version 0
  */
-public class Test extends JPanel implements Runnable,ActionListener
+public class Test extends JPanel implements Runnable,ActionListener,KeyListener
 {
     private int n;
     private Parser p;
@@ -21,19 +21,20 @@ public class Test extends JPanel implements Runnable,ActionListener
 
     public static void main(String[] args) throws Exception
     {
-        Test r = new Test("another.osu");
-        Thread t = new Thread(r);
-        r.thread = t;
-        t.start();
+        Test r = new Test("sekai.osu");
+        Thread current = new Thread(r);
+        r.thread = current;
+        current.start();
     }
 
     public Test(String file)
     {
         p = new Parser(file);
-        song = Song.makeNew("f.wav", p.delay());
+        song = Song.makeNew("sekai.wav", p.delay());
         n=1;
         v = 0;
         f=new JFrame("1kmania");
+        f.addKeyListener(this);
         f.setContentPane(this);
         f.setSize(800,600);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,8 +47,10 @@ public class Test extends JPanel implements Runnable,ActionListener
     {
         ArrayList<Integer> ts = p.times();
         song.start();
+        
         try{
-            song.notify();
+            thread.sleep(song.getDelay());
+            //song.notify();
             thread.sleep(ts.get(0));
             v=255;
         }catch(Exception e){}
@@ -73,4 +76,18 @@ public class Test extends JPanel implements Runnable,ActionListener
     {
         repaint();
     }
+    
+    public void keyPressed(KeyEvent e)
+    {
+        //if(e.getKeyCode()==KeyEvent.VK_SPACE){
+            System.out.println(song.getms());
+        
+    }
+    
+    public void keyReleased(KeyEvent e)
+    {
+        
+    }
+    
+    public void keyTyped(KeyEvent e){}
 }
