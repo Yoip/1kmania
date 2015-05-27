@@ -11,14 +11,15 @@ import javax.swing.*;
  */
 public class Test extends JPanel implements Runnable,ActionListener,KeyListener
 {
-    private int n;
+    private int n,score,combo,current;
     private Parser p;
     private Timer timer;
     private int v;
     private Thread thread;
     private Song song;
     private JFrame f;
-
+    private ArrayList<Integer> times;
+    
     public static void main(String[] args) throws Exception
     {
         Test r = new Test("sekai.osu");
@@ -32,7 +33,7 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
         p = new Parser(file);
         song = Song.makeNew("sekai.wav", p.delay());
         n=1;
-        v = 0;
+        v = score = current = 0;
         f=new JFrame("1kmania");
         f.addKeyListener(this);
         f.setContentPane(this);
@@ -45,18 +46,21 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
 
     public void run()
     {
-        ArrayList<Integer> ts = p.times();
+        times = p.times();
         song.start();
-        
+
         try{
             thread.sleep(song.getDelay());
             //song.notify();
-            thread.sleep(ts.get(0));
+            thread.sleep(times.get(0));
             v=255;
         }catch(Exception e){}
-        while(n<ts.size()){
+        while(n<times.size()){
             try{
-                thread.sleep(ts.get(n)-ts.get(n-1));
+                int diff = times.get(n)-times.get(n-1);
+                thread.sleep(diff/2);
+                current=n;
+                thread.sleep(diff/2);
                 v=255;
             }
             catch(Exception e){}
@@ -69,6 +73,8 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
         super.paint(g);
         setBackground(new Color(v,v,v));
         g.drawString(Long.toString(song.getms()), 400, 300);
+        g.setColor(Color.red);
+        g.drawString(Integer.toString(score), 1, 20);
         v=v<3?0:v-2;
     }
 
@@ -76,18 +82,26 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
     {
         repaint();
     }
-    
+
     public void keyPressed(KeyEvent e)
     {
-        //if(e.getKeyCode()==KeyEvent.VK_SPACE){
-            System.out.println(song.getms());
-        
+        if(e.getKeyCode()==KeyEvent.VK_SPACE){
+            long off = Math.abs(times.get(current)-song.getms());
+            if(off<300)
+            {
+                current++;
+                score+=300;
+                combo++;
+                System.out.println(current);
+                System.out.println(song.getms());
+            }
+        }
     }
-    
+
     public void keyReleased(KeyEvent e)
     {
-        
+
     }
-    
+
     public void keyTyped(KeyEvent e){}
 }
