@@ -22,7 +22,7 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
     
     public static void main(String[] args) throws Exception
     {
-        Test r = new Test("sekai.osu");
+        Test r = new Test("4d.osu");
         Thread current = new Thread(r);
         r.thread = current;
         current.start();
@@ -31,7 +31,7 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
     public Test(String file)
     {
         p = new Parser(file);
-        song = Song.makeNew("sekai.wav", p.delay());
+        song = Song.makeNew("f.wav", p.delay());
         n=1;
         v = score = current = 0;
         f=new JFrame("1kmania");
@@ -74,7 +74,11 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
         setBackground(new Color(v,v,v));
         g.drawString(Long.toString(song.getms()), 400, 300);
         g.setColor(Color.red);
-        g.drawString(Integer.toString(score), 1, 20);
+        g.drawString(score+"", 1, 20);
+        g.drawString(current+"", 1, 40);
+        g.drawString(n+"", 1, 60);
+        g.drawString(song.getms()+"", 1, 80);
+        g.drawString(times.get(current)+"", 1, 100);
         v=v<3?0:v-2;
     }
 
@@ -85,15 +89,13 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
 
     public void keyPressed(KeyEvent e)
     {
-        if(e.getKeyCode()==KeyEvent.VK_SPACE){
+        if(true){//e.getKeyCode()==KeyEvent.VK_SPACE){
             long off = Math.abs(times.get(current)-song.getms());
             if(off<300)
             {
                 current++;
                 score+=300;
                 combo++;
-                System.out.println(current);
-                System.out.println(song.getms());
             }
         }
     }
