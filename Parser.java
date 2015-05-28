@@ -1,21 +1,32 @@
 import java.io.*;
 import java.util.zip.*;
 import java.util.ArrayList;
+
 /**
- * Write a description of class Runner here.
+ * Parses a .osu file (beatmap) to get important information.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Austin
+ * @version 1
  */
 public class Parser
 {
     private String file;
 
+    /**
+     * Constructor for objects of class asdf
+     * 
+     * @param f the name of the file to be parsed.
+     */
     public Parser(String f)
     {
         file = f;
     }
 
+    /**
+     * Gets the delay, or the AudioLeadIn from the .osu file
+     * 
+     * @return the delay
+     */
     public long delay()
     {
         try {
@@ -34,6 +45,11 @@ public class Parser
         return 0;
     }
 
+    /**
+     * Gets the times in milliseconds of all the notes in the beatmap
+     * 
+     * @return an ArrayList of the timings of the notes in the beatmap
+     */
     public ArrayList<Integer> times()
     {
         ArrayList<Integer> times = new ArrayList<Integer>();

@@ -4,7 +4,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
- * Write a description of class Test here.
+ * Only input and music, no GUI, flashes instead of bars
  * 
  * @author Alex
  * @version 0

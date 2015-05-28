@@ -1,12 +1,17 @@
 #BlueJ class context
 comment0.params=f\ delay
 comment0.target=Song\ makeNew(java.lang.String,\ long)
+comment0.text=\r\n\ A\ static\ method\ that\ spawns\ and\ returns\ a\ song.\r\n\ \r\n\ @param\ \ f\ \ \ the\ audio\ file\ to\ be\ read\r\n\ @param\ \ delay\ \ \ the\ delay\ before\ the\ audio\ is\ played\r\n\ @return\ a\ new\ Thread\ that\ can\ be\ run\ to\ play\ the\ file\ after\ the\ delay\r\n
 comment1.params=
 comment1.target=void\ run()
+comment1.text=\r\n\ Runs\ the\ thread\ /\ plays\ the\ song\r\n
 comment2.params=
 comment2.target=long\ getms()
+comment2.text=\r\n\ Return\ the\ current\ position\ of\ the\ clip\ in\ milliseconds.\r\n\ \r\n\ @return\ the\ position\ of\ the\ clip\ in\ milliseconds\r\n
 comment3.params=
 comment3.target=long\ getDelay()
+comment3.text=\r\n\ Return\ the\ delay\ of\ the\ clip\ in\ milliseconds.\r\n\ \r\n\ @return\ the\ delay\ of\ the\ clip\ in\ milliseconds\r\n
 comment4.params=ms
 comment4.target=void\ seek(long)
+comment4.text=\r\n\ Seek\ to\ the\ a\ time\ in\ the\ clip.\r\n\ \r\n\ @param\ ms\ the\ position\ on\ milliseconds\ to\ jump\ to\r\n
 numComments=5

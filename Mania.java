@@ -4,10 +4,10 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
- * Write a description of class Mania here.
+ * The main class that consists of the GUI and input as well as timing and scoring management.
  * 
- * @author Alex
- * @version 0
+ * @author Alex, Austin
+ * @version 1
  */
 public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
 {
@@ -23,16 +23,21 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
 
     public static void main(String[] args) throws Exception
     {
-        Mania r = new Mania("sekai.osu");
+        Mania r = new Mania("4d.osu");
         Thread current = new Thread(r);
         r.thread = current;
         current.start();
     }
 
+    /**
+     * Constructor for new game instances
+     * 
+     * @param file the osu file to be parsed
+     */
     public Mania(String file)
     {
         p = new Parser(file);
-        song = Song.makeNew("sekai.wav", p.delay());
+        song = Song.makeNew("f.wav", p.delay());
         c = v = score = 0;
         diff = 300;
         speed = 2; //higher value = slower
@@ -48,6 +53,9 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
         timer=new Timer(20,this);
     }
 
+    /**
+     * The method to start off the song player and the input logic loop.
+     */
     public void run()
     {
         times = p.times();
@@ -58,13 +66,13 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
             thread.sleep(song.getDelay());
             timer.start();
             thread.sleep(times.get(0));
-            v=255;
+            //v=255;
         }catch(Exception e){}
         n = 1;
         while(n<times.size()){
             hit=false;
             try{
-                if(times.get(n-1)+diff<=song.getms() && c<n){
+                if((times.get(n-1)+diff<=song.getms() && c<n) || (n+1<times.size() && times.get(n+1)-20<song.getms())){
                     c=n;
                     if(!hit)
                         combo=0;
@@ -78,6 +86,9 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
         }
     }
 
+    /**
+     * The method called by AWT that draws the GUI.
+     */
     public void paint(Graphics g)
     {
         super.paint(g);
@@ -123,11 +134,17 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
         g.fillRect(126,521,74,499);
     }
 
+    /**
+     * The method called by the timer to animate the GUI.
+     */
     public void actionPerformed(ActionEvent e)
     {
         repaint();
     }
 
+    /**
+     * The method called by KeyListener when a key is pressed. Analyzes timing and scores hits.
+     */
     public void keyPressed(KeyEvent e)
     {
         if(e.getKeyCode()==KeyEvent.VK_SPACE){

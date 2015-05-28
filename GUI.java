@@ -4,9 +4,9 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
- * Write a description of class Test here.
+ * A test of only the graphics without proper timing or scoring.
  * 
- * @author Alex
+ * @author Austin
  * @version 0
  */
 public class GUI extends JPanel implements Runnable,ActionListener,KeyListener

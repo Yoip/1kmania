@@ -1,8 +1,11 @@
 #BlueJ class context
 comment0.params=f
 comment0.target=Parser(java.lang.String)
+comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ asdf\r\n\ \r\n\ @param\ f\ the\ name\ of\ the\ file\ to\ be\ parsed.\r\n
 comment1.params=
 comment1.target=long\ delay()
+comment1.text=\r\n\ Gets\ the\ delay,\ or\ the\ AudioLeadIn\ from\ the\ .osu\ file\r\n\ \r\n\ @return\ the\ delay\r\n
 comment2.params=
 comment2.target=java.util.ArrayList\ times()
+comment2.text=\r\n\ Gets\ the\ times\ in\ milliseconds\ of\ all\ the\ notes\ in\ the\ beatmap\r\n\ \r\n\ @return\ an\ ArrayList\ of\ the\ timings\ of\ the\ notes\ in\ the\ beatmap\r\n
 numComments=3
