@@ -84,10 +84,10 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
         g.drawString(Long.toString(song.getms()), 400, 300);
         g.setColor(Color.red);
         g.drawString(score+"", 1, 20);
-        g.drawString(song.getms()+"", 1, 80);
-        g.drawString(times.get(n)+"", 1, 100);
-        g.drawString(n+"", 1, 120);
-        g.drawString(c+"", 1, 140);
+        //g.drawString(song.getms()+"", 1, 80);
+        //g.drawString(times.get(n)+"", 1, 100);
+        //g.drawString(n+"", 1, 120);
+        //g.drawString(c+"", 1, 140);
         g.drawString("x"+combo, 10, 560);
         g.setColor(Color.GRAY);
         g.drawLine(125,0,125,600);
