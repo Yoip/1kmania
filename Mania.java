@@ -11,7 +11,7 @@ import javax.swing.*;
  */
 public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
 {
-    private int score,combo,n,v,c,diff;
+    private int score,combo,n,v,c,diff,speed,raw;
     private Parser p;
     private Timer timer;
     private Thread thread;
@@ -35,6 +35,7 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
         song = Song.makeNew("sekai.wav", p.delay());
         c = v = score = 0;
         diff = 300;
+        speed = 2; //higher value = slower
         setDoubleBuffered(true);
         setBackground(Color.white);
         f=new JFrame("1kmania");
@@ -51,6 +52,7 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
     {
         times = p.times();
         song.start();
+        //song.seek(80000);
         hit=false;
         try{
             thread.sleep(song.getDelay());
@@ -69,7 +71,6 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
                     hit=false;
                 }
                 if(times.get(n)+20<=song.getms()){
-                    v=255;
                     n++;
                 }
             }
@@ -83,8 +84,8 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
         int t=(int)song.getms();
         g.drawString(Long.toString(song.getms()), 400, 300);
         g.setColor(Color.red);
-        g.drawString(score+"", 1, 20);
-        //g.drawString(song.getms()+"", 1, 80);
+        g.drawString(score+"", 10, 20);
+        g.drawString(Math.round(10.*raw/c/3)/10.+"%", 10, 40);
         //g.drawString(times.get(n)+"", 1, 100);
         //g.drawString(n+"", 1, 120);
         //g.drawString(c+"", 1, 140);
@@ -92,14 +93,11 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
         g.setColor(Color.GRAY);
         g.drawLine(125,0,125,600);
         g.drawLine(200,0,200,600);
-        g.setColor(col);
-        g.fillRect(125,520,75,500);
-        g.setColor(Color.BLACK);
-        g.drawRect(126,521,73,498);
-        int low = 0,high = 0;
+        Color o = new Color(240,120,0);
+        int low = 0,high = times.size();
         for(int i = 0;i<times.size();i++)
         {
-            if(520-(times.get(i)-t)/10<0)
+            if(520-(times.get(i)-t)/speed<0)
             {
                 high = i;
                 break;
@@ -107,15 +105,22 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
         }
         for(int i = 0;i<times.size();i++)
         {
-            if(520-(times.get(i)-(int)t)/10<520)
+            if(520-(times.get(i)-(int)t)/speed<520)
             {
                 low = i;
                 break;
             }
         }
+        low=low==0?0:low-1;
         for(int i = low;i<high;i++){
-            g.fillRect(125,510-(times.get(i)-(int)t)/10,75,10);
+            g.setColor(o);
+            g.fillRect(125,515-(times.get(i)-(int)t)/speed,75,6);
+            g.setColor(Color.black);
+            g.drawRect(125,515-(times.get(i)-(int)t)/speed,75,6);
         }
+        g.setColor(Color.red);
+        g.setColor(col);
+        g.fillRect(126,521,74,499);
     }
 
     public void actionPerformed(ActionEvent e)
@@ -138,6 +143,7 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
                 else if(off<=140)
                     k=50;
                 score+=k+k*combo/5;
+                raw+=k;
                 c++;
                 combo++;
             }

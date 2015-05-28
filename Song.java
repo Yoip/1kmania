@@ -37,4 +37,9 @@ public class Song extends Thread
     {
         return delay;
     }
+    
+    public void seek(long ms)
+    {
+        clip.setMicrosecondPosition(ms*1000);
+    }
 }

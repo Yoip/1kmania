@@ -7,4 +7,6 @@ comment2.params=
 comment2.target=long\ getms()
 comment3.params=
 comment3.target=long\ getDelay()
-numComments=4
+comment4.params=ms
+comment4.target=void\ seek(long)
+numComments=5
