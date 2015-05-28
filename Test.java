@@ -11,18 +11,18 @@ import javax.swing.*;
  */
 public class Test extends JPanel implements Runnable,ActionListener,KeyListener
 {
-    private int score,combo,n,v,c;
-    private long t;
+    private int score,combo,n,v,c,diff;
     private Parser p;
     private Timer timer;
     private Thread thread;
     private Song song;
     private JFrame f;
     private ArrayList<Integer> times;
-    
+    private boolean hit;
+
     public static void main(String[] args) throws Exception
     {
-        Test r = new Test("4d.osu");
+        Test r = new Test("sekai.osu");
         Thread current = new Thread(r);
         r.thread = current;
         current.start();
@@ -31,14 +31,15 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
     public Test(String file)
     {
         p = new Parser(file);
-        song = Song.makeNew("f.wav", p.delay());
+        song = Song.makeNew("sekai.wav", p.delay());
         c = v = score = 0;
-        t = 0;
+        diff = 300;
         setDoubleBuffered(true);
         f=new JFrame("1kmania");
         f.addKeyListener(this);
         f.setContentPane(this);
         f.setSize(800,600);
+        f.setResizable(false);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
         timer=new Timer(20,this);
@@ -48,6 +49,7 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
     {
         times = p.times();
         song.start();
+        hit=false;
         try{
             thread.sleep(song.getDelay());
             timer.start();
@@ -56,14 +58,16 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
         }catch(Exception e){}
         n = 1;
         while(n<times.size()){
+            hit=false;
             try{
-                int diff = times.get(n)-times.get(n-1);
-                if(times.get(n)+diff/2<=t){
+                if(times.get(n-1)+diff<=song.getms() && c<n){
                     c=n;
+                    if(!hit)
+                        combo=0;
+                    hit=false;
                 }
-                if(times.get(n)+20<=t){
+                if(times.get(n)+20<=song.getms()){
                     v=255;
-                    t=song.getms();
                     n++;
                 }
             }
@@ -78,16 +82,16 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
         g.drawString(Long.toString(song.getms()), 400, 300);
         g.setColor(Color.red);
         g.drawString(score+"", 1, 20);
-        g.drawString(t+"", 1, 60);
         g.drawString(song.getms()+"", 1, 80);
         g.drawString(times.get(n)+"", 1, 100);
         g.drawString(n+"", 1, 120);
+        g.drawString(c+"", 1, 140);
+        g.drawString("x"+combo, 10, 560);
         v=v<3?0:v-1;
     }
 
     public void actionPerformed(ActionEvent e)
     {
-        t+=20;
         repaint();
     }
 
@@ -95,11 +99,21 @@ public class Test extends JPanel implements Runnable,ActionListener,KeyListener
     {
         if(e.getKeyCode()==KeyEvent.VK_SPACE){
             long off = Math.abs(times.get(c)-song.getms());
-            if(off<300)
-            {
-                score+=300;
+            if(off<=140){
+                hit=true;
+                int k=0;
+                if(off<=80)
+                    k=300;
+                else if(off<=110)
+                    k=100;
+                else if(off<=140)
+                    k=50;
+                score+=k+k*combo/5;
+                c++;
                 combo++;
             }
+            else if(off<=diff)
+                combo=0;
         }
     }
 
