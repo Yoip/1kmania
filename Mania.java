@@ -23,7 +23,7 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
 
     public static void main(String[] args) throws Exception
     {
-        Mania r = new Mania("4d.osu");
+        Mania r = new Mania("river.osu");
         Thread current = new Thread(r);
         r.thread = current;
         current.start();
@@ -37,7 +37,7 @@ public class Mania extends JPanel implements Runnable,ActionListener,KeyListener
     public Mania(String file)
     {
         p = new Parser(file);
-        song = Song.makeNew("f.wav", p.delay());
+        song = Song.makeNew("river.wav", p.delay());
         c = v = score = 0;
         diff = 300;
         speed = 2; //higher value = slower
